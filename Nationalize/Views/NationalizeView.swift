@@ -52,5 +52,5 @@ struct NationalizeView: View {
 
 
 #Preview {
-    WelcomeView()
+    NationalizeView()
 }

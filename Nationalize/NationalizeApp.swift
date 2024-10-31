@@ -11,7 +11,7 @@ import SwiftUI
 struct NationalizeApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            NationalizeView()
         }
     }
 }

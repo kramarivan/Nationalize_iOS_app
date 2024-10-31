@@ -1,3 +1,11 @@
+//
+//  NationalizeViewModel.swift
+//  Nationalize
+//
+//  Created by Ivan Kramar on 31.10.2024..
+//
+
+
 import SwiftUI
 import Combine
 
@@ -24,18 +32,43 @@ class NationalizeViewModel: ObservableObject {
                     return
                 }
                 
-                guard let data = data else {
-                    self.errorMessage = "No data received"
-                    return
-                }
-                
-                do {
-                    let decodedResult = try JSONDecoder().decode(NationalizeResult.self, from: data)
-                    self.result = decodedResult
-                } catch {
-                    self.errorMessage = "Failed to decode response"
+                if let httpResponse = response as? HTTPURLResponse {
+                    switch httpResponse.statusCode {
+                    case 200:
+                        guard let data = data else {
+                            self.errorMessage = "No data received"
+                            return
+                        }
+                        do {
+                            let decodedResult = try JSONDecoder().decode(NationalizeResult.self, from: data)
+                            self.result = decodedResult
+                        } catch {
+                            self.errorMessage = "Failed to decode response"
+                        }
+                    case 401:
+                        self.errorMessage = "Unauthorized: Invalid API key"
+                    case 402:
+                        self.errorMessage = "Payment Required: Subscription is not active"
+                    case 422:
+                        self.errorMessage = self.extractErrorMessage(from: data) ?? "Unprocessable Content"
+                    case 429:
+                        self.errorMessage = self.extractErrorMessage(from: data) ?? "Too many requests"
+                    default:
+                        self.errorMessage = "Unexpected error: \(httpResponse.statusCode)"
+                    }
                 }
             }
         }.resume()
     }
+    
+    private func extractErrorMessage(from data: Data?) -> String? {
+        guard let data = data else { return nil }
+        do {
+            let errorResponse = try JSONDecoder().decode(ErrorResponse.self, from: data)
+            return errorResponse.error
+        } catch {
+            return nil
+        }
+    }
 }
+
