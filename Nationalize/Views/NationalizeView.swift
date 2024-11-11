@@ -26,7 +26,7 @@ struct NationalizeView: View {
             VStack(spacing: 20) {
                 Spacer()
                 Image("roots").resizable().frame(width: 200, height:  200)
-                Text("How Many of You?").font(.largeTitle)
+                Text("Where are your roots?").font(.largeTitle)
                 Text("Find out where you share your name.").font(.callout)
                 Spacer()
                 TextField("Full Name or Last Name", text: $text)
