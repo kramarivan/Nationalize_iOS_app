@@ -14,6 +14,10 @@ struct NationalizeView: View {
     
     var body: some View {
         NavigationStack {
+            ZStack{
+            
+            Color(red: 96 / 255, green: 139 / 255, blue: 193 / 255)
+                                .ignoresSafeArea()
             if viewModel.isLoading {
                 ProgressView("Loading...")
                     .padding()
@@ -25,15 +29,15 @@ struct NationalizeView: View {
             }else{
             VStack(spacing: 20) {
                 Spacer()
+                Spacer()
                 Image("roots").resizable().frame(width: 200, height:  200)
                 Text("Where are your roots?").font(.largeTitle)
                 Text("Find out where you share your name.").font(.callout)
                 Spacer()
                 TextField("Full Name or Last Name", text: $text)
                     .padding()
-                    .background(Color.brown)
+                    .background(Color(red: 96 / 255, green: 102 / 255, blue: 118 / 224))
                     .cornerRadius(5)
-                    .foregroundColor(.white)
                     .padding(.horizontal, 30)
                 
                 
@@ -42,9 +46,10 @@ struct NationalizeView: View {
                     $isNavigating.wrappedValue = true
                 }
                 .padding()
-                .background(Color.brown)
-                .foregroundStyle(.white)
+                .background(Color(red: 243 / 255, green: 243 / 255, blue: 193 / 224))
+                .foregroundStyle(.black)
                 .cornerRadius(5)
+                Spacer()
                 Spacer()
                 
             }
@@ -56,6 +61,7 @@ struct NationalizeView: View {
             }
             }
         }
+        }.tint(Color.black)
     }
 }
 
